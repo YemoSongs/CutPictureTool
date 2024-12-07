@@ -1,18 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
+using System.Windows.Forms;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+
 
 namespace CutPictureTool
 {
@@ -72,7 +64,7 @@ namespace CutPictureTool
         {
             if (string.IsNullOrEmpty(bigTexturePath))
             {
-                MessageBox.Show("请先选择大图路径");
+                System.Windows.MessageBox.Show("请先选择大图路径");
                 return;
             }
 
@@ -80,25 +72,22 @@ namespace CutPictureTool
             string format = GetSelectedFormat();
             if (string.IsNullOrEmpty(format))
             {
-                MessageBox.Show("请选择图片格式");
+                System.Windows.MessageBox.Show("请选择图片格式");
                 return;
             }
 
-            // 打开保存文件对话框，让用户选择保存的文件夹
-            var saveFileDialog = new Microsoft.Win32.SaveFileDialog
+            // 打开文件夹选择对话框
+            var folderBrowserDialog = new FolderBrowserDialog
             {
-                Filter = "所有文件|*.*", // 选择所有文件类型，稍后可以根据文件扩展名保存
-                DefaultExt = format // 默认扩展名
+                Description = "选择保存目录",
+                // 设置初始目录为大图所在目录
+                SelectedPath = System.IO.Path.GetDirectoryName(bigTexturePath)
             };
 
-
-            // 设置初始目录为大图所在目录
-            saveFileDialog.InitialDirectory = System.IO.Path.GetDirectoryName(bigTexturePath);
-
-            if (saveFileDialog.ShowDialog() == true)
+            if (folderBrowserDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 // 获取用户选择的保存路径
-                string saveDirectory = System.IO.Path.GetDirectoryName(saveFileDialog.FileName);
+                string saveDirectory = folderBrowserDialog.SelectedPath;
 
                 // 以大图文件名为文件夹名，在保存路径下创建文件夹
                 string folderName = System.IO.Path.GetFileNameWithoutExtension(bigTexturePath);
@@ -142,7 +131,7 @@ namespace CutPictureTool
                         }
                     }
 
-                    MessageBox.Show("切图完成！");
+                    System.Windows.MessageBox.Show("切图完成！");
                 }
             }
         }
@@ -155,7 +144,7 @@ namespace CutPictureTool
             if (!int.TryParse(tbSmallWidth.Text, out int smallWidth) || smallWidth <= 0)
             {
                 // 提示错误信息
-                MessageBox.Show("请输入有效的小图宽度");
+                System.Windows.MessageBox.Show("请输入有效的小图宽度");
             }
             this.smallWidth = smallWidth;
         }
@@ -166,7 +155,7 @@ namespace CutPictureTool
             if (!int.TryParse(tbSmallHeight.Text, out int smallHeight) || smallHeight <= 0)
             {
                 // 提示错误信息
-                MessageBox.Show("请输入有效的小图高度");
+                System.Windows.MessageBox.Show("请输入有效的小图高度");
             }
             this.smallHeight = smallHeight;
         }
