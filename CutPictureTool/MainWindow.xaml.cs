@@ -102,20 +102,37 @@ namespace CutPictureTool
                 // 读取大图
                 using (var img = new Bitmap(bigTexturePath))
                 {
-                    int rows = bigHeight / smallHeight; // 切割的行数
-                    int cols = bigWidth / smallWidth;   // 切割的列数
+                    // 计算实际需要的行数和列数（向上取整）
+                    int rows = (int)Math.Ceiling((double)bigHeight / smallHeight);
+                    int cols = (int)Math.Ceiling((double)bigWidth / smallWidth);
 
                     for (int row = 0; row < rows; row++)
                     {
                         for (int col = 0; col < cols; col++)
                         {
-                            // 定义切割区域
-                            System.Drawing.Rectangle cropRect = new System.Drawing.Rectangle(col * smallWidth, row * smallHeight, smallWidth, smallHeight);
-
-                            // 从原图中获取小图
-                            using (Bitmap croppedImage = img.Clone(cropRect, img.PixelFormat))
+                            // 创建一个新的小图位图（背景为黑色）
+                            using (Bitmap croppedImage = new Bitmap(smallWidth, smallHeight))
                             {
-                                // 保存小图到新创建的文件夹中
+                                // 使用Graphics绘制
+                                using (Graphics g = Graphics.FromImage(croppedImage))
+                                {
+                                    // 填充黑色背景
+                                    g.Clear(Color.Black);
+
+                                    // 计算实际可复制的宽度和高度
+                                    int copyWidth = Math.Min(smallWidth, bigWidth - col * smallWidth);
+                                    int copyHeight = Math.Min(smallHeight, bigHeight - row * smallHeight);
+
+                                    // 定义源图的裁剪区域
+                                    Rectangle sourceRect = new Rectangle(col * smallWidth, row * smallHeight, copyWidth, copyHeight);
+                                    // 定义目标区域（从左上角开始）
+                                    Rectangle destRect = new Rectangle(0, 0, copyWidth, copyHeight);
+
+                                    // 复制部分图像
+                                    g.DrawImage(img, destRect, sourceRect, GraphicsUnit.Pixel);
+                                }
+
+                                // 保存小图
                                 string savePath = System.IO.Path.Combine(targetFolder, $"{folderName}_{row}_{col}.{format}");
 
                                 // 根据格式保存图片
