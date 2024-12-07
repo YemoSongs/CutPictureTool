@@ -1,0 +1,70 @@
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.VC.db
+*.VC.VC.opendb
+
+# Build Results
+bin/
+obj/
+Debug/
+Release/
+TestResults/
+
+# OS Generated Files
+.DS_Store
+Thumbs.db
+
+# Package management
+*.nupkg
+*.snupkg
+*.lock.json
+*.log
+package-lock.json
+
+# Tooling
+*.ide/
+.idea/
+.vscode/
+*.CodeAnalysisLog.xml
+
+# Windows image file caches
+*.cache
+
+# Resharper
+_ReSharper*/  
+*.DotSettings.user
+
+# Azure DevOps
+*.coverage
+*.coveragexml
+TestResults/
+
+# Rider
+.idea/
+*.sln.iml
+*.dotSettings.user
+
+# NuGet Packages
+packages/
+*.nuspec
+*.nupkg
+
+# WPF Specific
+# Ignore compiled resources
+*.g.i.cs
+*.g.cs
+
+# Ignore application insights settings
+ApplicationInsights.config
+
+# Publish outputs
+*.publish*
+*.appxupload
+*.appxbundle
+
+# Exclude secrets
+secrets.json
